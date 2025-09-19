@@ -1,0 +1,56 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+function InputForm(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [signUp, setSignUp] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const endpoint = signUp ? "signup" : "login";
+
+    try {
+      const res = await axios.post(`http://localhost:5000/${endpoint}`, { email, password });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      props.closeModal();
+    } catch (err) {
+      setMessage(err.response?.data?.message);
+    }
+  }
+
+  return (
+    <>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="form-control">
+          <label>Email</label>
+          <input
+            type="email"
+            className="input"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-control">
+          <label>Password</label>
+          <input
+            type="password"
+            className="input"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit">{signUp ? "Sign Up" : "Login"}</button><br />
+        {message && <h6 className="error">{message}</h6>}
+        <p onClick={() => setSignUp((pre) => !pre)}>
+          {signUp ? "Already have an account" : "Create new account"}
+        </p>
+      </form>
+    </>
+  );
+}
+
+export default InputForm;
