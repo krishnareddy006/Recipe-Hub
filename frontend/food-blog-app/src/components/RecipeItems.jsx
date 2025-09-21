@@ -1,43 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BsFillStopwatchFill } from "react-icons/bs";
-import { FaHeart, FaEye } from "react-icons/fa6";
-import { FaEdit } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa6";
+import { FaEdit, FaLeaf, FaDrumstickBite } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from 'axios';
 
 function RecipeItems({ 
-  loadedRecipes, 
-  containerStyles, 
-  cardStyles, 
-  cardImageStyles, 
-  cardBodyStyles,
-  titleStyles,
-  iconsStyles,
-  timerStyles,
-  actionStyles,
-  editIconStyles,
-  deleteIconStyles,
+  loadedRecipes,
   onViewRecipe,
-  onLoginRequired
+  onLoginRequired,
+  hasActiveSearch = false
 }) {
   const [recipes, setRecipes] = useState(loadedRecipes || []);
   
-  // ✅ Current route checks
+  // Route checks
   const isMyRecipePage = window.location.pathname === "/myRecipe";
   const isFavPage = window.location.pathname === "/favRecipes";
   const isHomePage = window.location.pathname === "/";
   
-  // ✅ Get current user
+  // Current user and auth data
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
   
-  // ✅ Load user-specific favorites
+  // Load user-specific favorites
   const [favoriteRecipes, setFavoriteRecipes] = useState(
     JSON.parse(localStorage.getItem(`fav_${user?._id}`)) || []
   );
 
-  // ✅ IMPROVED useEffect with better dependency management
+  // Handle recipe list updates (based on route and props)
   useEffect(() => {
     if (isFavPage) {
       setRecipes(favoriteRecipes);
@@ -46,14 +37,14 @@ function RecipeItems({
     }
   }, [loadedRecipes, isFavPage]);
 
-  // ✅ SEPARATE useEffect for favorites page updates
+  // Handle favorites page re-renders
   useEffect(() => {
     if (isFavPage) {
       setRecipes(favoriteRecipes);
     }
   }, [favoriteRecipes, isFavPage]);
 
-  // ✅ Delete recipe with immediate UI update
+  // Delete recipe (updates UI and server)
   const onDelete = async (id) => {
     try {
       const updatedRecipes = recipes.filter((item) => item._id !== id);
@@ -73,7 +64,7 @@ function RecipeItems({
     }
   };
 
-  // ✅ Toggle favorite with login check
+  // Add or remove recipe from favorites
   const toggleFavorite = (item) => {
     if (!token) {
       if (onLoginRequired) onLoginRequired();
@@ -97,126 +88,116 @@ function RecipeItems({
     }
   };
 
-  // ✅ Handle view recipe (no login required)
-  const handleViewRecipe = (recipe) => {
-    if (onViewRecipe) {
-      onViewRecipe(recipe);
-    }
-  };
-
-  // ✅ Handle card click (except on action buttons)
+  // Handle recipe card click (avoids action button clicks)
   const handleCardClick = (item, event) => {
-    // ✅ Prevent modal from opening when clicking on action buttons
     if (event.target.closest('.card-actions') || 
         event.target.closest('.action') || 
         event.target.closest('[data-action]')) {
       return;
     }
     
-    // ✅ Open recipe modal
-    handleViewRecipe(item);
+    if (onViewRecipe) {
+      onViewRecipe(item);
+    }
   };
 
-  // ✅ Use passed styles or fall back to className for Home page
-  const finalContainerStyles = containerStyles || {};
-  const finalCardStyles = cardStyles || {};
-
   return (
-    <div 
-      className={containerStyles ? "" : "card-container"} 
-      style={finalContainerStyles}
-    >
+    <div className="card-container">
       {Array.isArray(recipes) && recipes.length > 0 ? (
         recipes.map((item, index) => (
           <div 
             key={index}
-            className={cardStyles ? "" : "card"}
-            style={{
-              ...finalCardStyles,
-              cursor: 'pointer'
-            }}
+            className="card"
             onClick={(e) => handleCardClick(item, e)}
           >
             <img 
               src={`http://localhost:5000/images/${item.coverImage}`} 
               alt={item.title}
-              style={cardImageStyles}
             />
-            <div className={cardBodyStyles ? "" : "card-body"} style={cardBodyStyles}>
-              <div className={titleStyles ? "" : "title"} style={titleStyles}>{item.title}</div>
-              <div className={iconsStyles ? "" : "icons"} style={iconsStyles}>
-                <div className={timerStyles ? "" : "timer"} style={timerStyles}>
-                  <BsFillStopwatchFill /> {item.time}
+            <div className="card-body">
+              <div className="title">
+                {item.title}
+              </div>
+              
+              <div className="recipe-info">
+                <span>{item.cuisineType || 'No Cuisine'}</span>
+                <span>{item.country || 'No Country'}</span>
+              </div>
+
+              <div className="icons">
+                <div className="timer">
+                  <BsFillStopwatchFill />
+                  <span>{item.time}</span>
                 </div>
 
-                {/* ✅ UPDATED ICONS SECTION WITH PROPER EVENT HANDLING */}
-                {isMyRecipePage ? (
-                  // ✅ My Recipes: Edit & Delete only
-                  <div style={actionStyles} className="action" data-action="true">
-                    <Link 
-                      to={`/editRecipe/${item._id}`} 
-                      className={editIconStyles ? "" : "editIcon"} 
-                      style={editIconStyles}
-                      data-action="true"
-                    >
-                      <FaEdit />
-                    </Link>
-                    <MdDelete
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDelete(item._id);
-                      }}
-                      className={deleteIconStyles ? "" : "deleteIcon"}
-                      style={deleteIconStyles}
-                      data-action="true"
-                    />
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}>
+                  <div className="diet-type-box" style={{
+                    backgroundColor: item.dietType === 'Veg' ? '#28a745' : item.dietType === 'Non-Veg' ? '#dc3545' : '#6c757d',
+                    color: 'white',
+                    padding: '3px 6px',
+                    borderRadius: '10px',
+                    fontSize: '0.65rem',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                    display: 'flex',
+                    alignItems: 'center',
+                    whiteSpace: 'nowrap'
+                  }}>
+                    {item.dietType === 'Veg' && <FaLeaf style={{ marginRight: '3px', fontSize: '8px' }} />}
+                    {item.dietType === 'Non-Veg' && <FaDrumstickBite style={{ marginRight: '3px', fontSize: '8px' }} />}
+                    {item.dietType === 'Non-Veg' ? 'NON-VEG' : item.dietType || 'N/A'}
                   </div>
-                ) : (
-                  // ✅ Home & Favorites: View + Favorite buttons
-                  <div 
-                    style={{ display: 'flex', gap: '10px', alignItems: 'center' }} 
-                    className="card-actions"
-                    data-action="true"
-                  >
-                    {/* ✅ View Button */}
-                    <FaEye
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleViewRecipe(item);
-                      }}
-                      style={{
-                        color: '#213547',
-                        cursor: 'pointer',
-                        fontSize: '18px',
-                        transition: 'color 0.3s ease'
-                      }}
-                      onMouseEnter={(e) => e.target.style.color = '#e67e22'}
-                      onMouseLeave={(e) => e.target.style.color = '#213547'}
-                      data-action="true"
-                    />
-                    
-                    {/* ✅ Favorite Button */}
-                    <FaHeart
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite(item);
-                      }}
-                      style={{
-                        color: favoriteRecipes.some((r) => r._id === item._id) ? "red" : "#213547",
-                        cursor: "pointer",
-                        fontSize: '18px',
-                        transition: 'color 0.3s ease'
-                      }}
-                      data-action="true"
-                    />
-                  </div>
-                )}
+
+                  {isMyRecipePage ? (
+                    <div className="action" data-action="true">
+                      <Link 
+                        to={`/editRecipe/${item._id}`} 
+                        className="editIcon"
+                        data-action="true"
+                      >
+                        <FaEdit />
+                      </Link>
+                      <MdDelete
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(item._id);
+                        }}
+                        className="deleteIcon"
+                        data-action="true"
+                      />
+                    </div>
+                  ) : (
+                    <div className="card-actions" data-action="true">
+                      <FaHeart
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFavorite(item);
+                        }}
+                        style={{
+                          color: favoriteRecipes.some((r) => r._id === item._id) ? "red" : "#213547",
+                          cursor: "pointer",
+                          fontSize: '18px',
+                          transition: 'color 0.3s ease'
+                        }}
+                        data-action="true"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         ))
       ) : (
-        <p style={{textAlign: 'center', gridColumn: '1 / -1'}}>No recipes available</p>
+        hasActiveSearch && isHomePage ? (
+          null
+        ) : (
+          <div className="no-recipes-message">No recipes available</div>
+        )
       )}
     </div>
   );

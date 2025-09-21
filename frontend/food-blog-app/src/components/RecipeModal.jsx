@@ -5,19 +5,20 @@ import { BsFillStopwatchFill } from "react-icons/bs";
 function RecipeModal({ recipe, onClose }) {
   if (!recipe) return null;
 
+  // Utility function to check if an ingredient string is unusually long
+  const isLongIngredient = (ingredient) => {
+    return ingredient.length > 50;
+  };
+
   return (
     <div className="recipe-modal">
-      {/* ✅ Close Button */}
       <button className="recipe-modal-close" onClick={onClose}>
         <IoClose size={20} />
       </button>
 
-      {/* ✅ Recipe Content */}
       <div className="recipe-modal-content">
-        {/* ✅ Title */}
         <h2 className="recipe-modal-title">{recipe.title}</h2>
 
-        {/* ✅ Image */}
         <div className="recipe-modal-image-container">
           <img 
             src={`http://localhost:5000/images/${recipe.coverImage}`} 
@@ -26,20 +27,46 @@ function RecipeModal({ recipe, onClose }) {
           />
         </div>
 
-        {/* ✅ Time */}
+        {/* Recipe metadata section */}
+        <div className="recipe-modal-details">
+          {recipe.dietType && (
+            <div className="recipe-modal-tag">
+              {recipe.dietType}
+            </div>
+          )}
+          
+          {recipe.cuisineType && (
+            <div className="recipe-modal-tag">
+              {recipe.cuisineType}
+            </div>
+          )}
+          
+          {recipe.country && (
+            <div className="recipe-modal-tag">
+              {recipe.country}
+            </div>
+          )}
+        </div>
+
+        {/* Cooking time display */}
         <div className="recipe-modal-time">
           <BsFillStopwatchFill />
           <span>{recipe.time}</span>
         </div>
 
-        {/* ✅ Ingredients */}
+        {/* Ingredients list */}
         <div className="recipe-modal-section">
           <h3>Ingredients</h3>
           <div className="recipe-modal-ingredients">
             {recipe.ingredients && recipe.ingredients.length > 0 ? (
               <ul>
                 {recipe.ingredients.map((ingredient, index) => (
-                  <li key={index}>{ingredient}</li>
+                  <li 
+                    key={index}
+                    className={isLongIngredient(ingredient) ? 'long-ingredient' : ''}
+                  >
+                    {ingredient}
+                  </li>
                 ))}
               </ul>
             ) : (
@@ -48,7 +75,7 @@ function RecipeModal({ recipe, onClose }) {
           </div>
         </div>
 
-        {/* ✅ Instructions */}
+        {/* Cooking instructions */}
         <div className="recipe-modal-section">
           <h3>Instructions</h3>
           <div className="recipe-modal-instructions">

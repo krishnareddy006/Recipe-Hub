@@ -5,69 +5,116 @@ import { useNavigate, useLoaderData } from 'react-router-dom';
 import Modal from '../components/Modal';
 import InputForm from '../components/InputForm';
 import RecipeModal from '../components/RecipeModal';
-import { FaSearch, FaTimes } from 'react-icons/fa';
+import { FaSearch, FaTimes, FaFilter } from 'react-icons/fa';
 
 function Home() {
   const navigate = useNavigate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-
-  // Track login state reactively
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
-  // Sync login state when localStorage changes
+  // State for search and filtering
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    dietType: '',
+    cuisineType: '',
+    country: ''
+  });
+
+  // Keep login state synced with localStorage
   useEffect(() => {
     const checkLogin = () => setIsLoggedIn(!!localStorage.getItem("token"));
     window.addEventListener("storage", checkLogin);
     return () => window.removeEventListener("storage", checkLogin);
   }, []);
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredRecipes, setFilteredRecipes] = useState([]);
-
+  // Navigate to add recipe page or open login modal
   const toAddRecipe = () => {
     if (isLoggedIn) navigate("/addRecipe");
     else setIsLoginOpen(true);
   };
 
+  // Close login modal and update login status
   function closeLoginModal() {
     setIsLoginOpen(false);
     setIsLoggedIn(!!localStorage.getItem("token"));
   }
 
+  // Close recipe details modal
   function closeRecipeModal() {
     setIsRecipeModalOpen(false);
     setSelectedRecipe(null);
   }
 
+  // Open recipe details modal
   function handleViewRecipe(recipe) {
     setSelectedRecipe(recipe);
     setIsRecipeModalOpen(true);
   }
 
+  // Open login modal explicitly
   function showLoginModal() {
     setIsLoginOpen(true);
   }
 
   const recipes = useLoaderData() || [];
 
+  // Handle search input changes
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    if (term === '') setFilteredRecipes([]);
-    else setFilteredRecipes(recipes.filter(r => r.title.toLowerCase().includes(term)));
+    applyFilters(term, filters);
   };
 
+  // Clear search and reset filters
   const clearSearch = () => {
     setSearchTerm('');
+    setFilters({ dietType: '', cuisineType: '', country: '' });
     setFilteredRecipes([]);
+    setFilterOpen(false);
   };
 
-  const displayRecipes = searchTerm ? filteredRecipes : recipes;
+  // Update filters dynamically
+  const handleFilterChange = (filterType, value) => {
+    const newFilters = { ...filters, [filterType]: value };
+    setFilters(newFilters);
+    applyFilters(searchTerm, newFilters);
+  };
+
+  // Apply search and filter logic
+  const applyFilters = (searchText, currentFilters) => {
+    let filtered = recipes;
+
+    if (searchText) {
+      filtered = filtered.filter(r => r.title.toLowerCase().includes(searchText));
+    }
+    if (currentFilters.dietType) {
+      filtered = filtered.filter(r => r.dietType === currentFilters.dietType);
+    }
+    if (currentFilters.cuisineType) {
+      filtered = filtered.filter(r => r.cuisineType && r.cuisineType.toLowerCase().includes(currentFilters.cuisineType.toLowerCase()));
+    }
+    if (currentFilters.country) {
+      filtered = filtered.filter(r => r.country && r.country.toLowerCase().includes(currentFilters.country.toLowerCase()));
+    }
+
+    setFilteredRecipes(filtered);
+  };
+
+  // Decide whether to show all recipes or filtered ones
+  const hasActiveFilters = searchTerm || filters.dietType || filters.cuisineType || filters.country;
+  const displayRecipes = hasActiveFilters ? filteredRecipes : recipes;
+
+  // Extract unique cuisines and countries for filter dropdowns
+  const uniqueCuisines = [...new Set(recipes.map(r => r.cuisineType).filter(Boolean))];
+  const uniqueCountries = [...new Set(recipes.map(r => r.country).filter(Boolean))];
 
   return (
     <>      
+      {/* Hero Section */}
       <section className='home'>
         <div className='left'>
           <h1 className='hero-title'>
@@ -85,12 +132,12 @@ function Home() {
             src={foodRecipe} 
             alt="Delicious Food Recipe" 
             onMouseEnter={(e) => e.target.style.transform = 'rotate(0deg) scale(1.05)'}
-            onMouseLeave={(e) => e.target.style.transform = 'rotate(2deg) scale(1)'
-            }
+            onMouseLeave={(e) => e.target.style.transform = 'rotate(2deg) scale(1)'}
           />
         </div>
       </section>
 
+      {/* Recipe Section with Search & Filters */}
       <div className='recipe'>
         <div className="home-search-header">
           <div className="home-search-content">
@@ -98,51 +145,103 @@ function Home() {
               Discover Your <span>Perfect Recipe</span>
             </h2>
             <p className="home-search-subtitle">
-              Search by recipe name to find your favorite dishes
+              Search by recipe name and filter by preferences
             </p>
             
-            <div className="search-box">
-              <FaSearch className="search-icon" />
-              <input
-                type="text"
-                placeholder="Search recipes by name..."
-                value={searchTerm}
-                onChange={handleSearch}
-                className="search-input"
-              />
-              {searchTerm && (
-                <button onClick={clearSearch} className="search-clear">
-                  <FaTimes />
-                </button>
-              )}
+            <div className="search-filter-row">
+              <div className="search-box">
+                <FaSearch className="search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search recipes by name..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="search-input"
+                />
+                {searchTerm && (
+                  <button onClick={clearSearch} className="search-clear">
+                    <FaTimes />
+                  </button>
+                )}
+              </div>
+
+              <button 
+                className="filter-btn"
+                onClick={() => setFilterOpen(!filterOpen)}
+              >
+                <FaFilter />
+                Filter
+              </button>
             </div>
 
-            {searchTerm && (
+            {filterOpen && (
+              <div className="filter-dropdown">
+                <div className="filter-row">
+                  <select 
+                    value={filters.dietType} 
+                    onChange={(e) => handleFilterChange('dietType', e.target.value)}
+                    className="filter-select"
+                  >
+                    <option value="">All Diet Types</option>
+                    <option value="Veg">Veg</option>
+                    <option value="Non-Veg">Non-Veg</option>
+                  </select>
+
+                  <select 
+                    value={filters.cuisineType} 
+                    onChange={(e) => handleFilterChange('cuisineType', e.target.value)}
+                    className="filter-select"
+                  >
+                    <option value="">All Cuisines</option>
+                    {uniqueCuisines.map(cuisine => (
+                      <option key={cuisine} value={cuisine}>{cuisine}</option>
+                    ))}
+                  </select>
+
+                  <select 
+                    value={filters.country} 
+                    onChange={(e) => handleFilterChange('country', e.target.value)}
+                    className="filter-select"
+                  >
+                    <option value="">All Countries</option>
+                    {uniqueCountries.map(country => (
+                      <option key={country} value={country}>{country}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {hasActiveFilters && (
               <div className="search-results-info">
-                {filteredRecipes.length > 0 ? (
-                  <p>Found {filteredRecipes.length} recipe{filteredRecipes.length !== 1 ? 's' : ''} for "{searchTerm}"</p>
+                {displayRecipes.length > 0 ? (
+                  <p>Found {displayRecipes.length} recipe{displayRecipes.length !== 1 ? 's' : ''}</p>
                 ) : (
-                  <p>No recipes found for "{searchTerm}". Try different keywords.</p>
+                  <p>No recipes found with current filters.</p>
                 )}
               </div>
             )}
           </div>
         </div>
 
+        {/* Render Recipe Items */}
         <RecipeItems 
           loadedRecipes={displayRecipes}
           onViewRecipe={handleViewRecipe}
           onLoginRequired={showLoginModal}
           isLoggedIn={isLoggedIn}
+          hasActiveSearch={hasActiveFilters}
         />
       </div>
 
+      {/* Login Modal */}
       {isLoginOpen && (
         <Modal closeModal={closeLoginModal}>
           <InputForm closeModal={closeLoginModal} />
         </Modal>
       )}
 
+      {/* Recipe Details Modal */}
       {isRecipeModalOpen && (
         <Modal closeModal={closeRecipeModal}>
           <RecipeModal recipe={selectedRecipe} onClose={closeRecipeModal} />

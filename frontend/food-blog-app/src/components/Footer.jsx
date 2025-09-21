@@ -7,7 +7,6 @@ function Footer() {
   const handleFeedbackSubmit = (e) => {
     e.preventDefault();
     if (feedback.trim()) {
-      // Handle feedback submission here
       console.log('Feedback submitted:', feedback);
       alert('Thank you for your feedback!');
       setFeedback('');
@@ -17,9 +16,7 @@ function Footer() {
   return (
     <div className='footer'>
       <div className='footer-content'>
-        {/* ✅ Main Footer Section - Left and Right */}
         <div className='footer-main'>
-          {/* ✅ Left Side - Feedback */}
           <div className='footer-left'>
             <div className='feedback-section'>
               <h3>We'd Love Your Feedback!</h3>
@@ -32,13 +29,11 @@ function Footer() {
                   rows="3"
                 />
                 <button type="submit" className='feedback-submit-btn'>
-                  Submit Feedback
+                  Submit
                 </button>
               </form>
             </div>
           </div>
-          
-          {/* ✅ Right Side - Social Follow */}
           <div className='footer-right'>
             <div className='follow-section'>
               <h3>Contact Me</h3>
@@ -78,8 +73,6 @@ function Footer() {
             </div>
           </div>
         </div>
-        
-        {/* ✅ Bottom - Full Width Copyright */}
         <div className='footer-bottom'>
           <p className='footer-text'>
             © 2025 Recipe Hub. All rights reserved. | Crafted with passion for food lovers worldwide

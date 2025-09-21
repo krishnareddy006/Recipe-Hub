@@ -14,10 +14,12 @@ function Navbar() {
   const [isLogin, setIsLogin] = useState(token ? false : true);
   let user = JSON.parse(localStorage.getItem("user"));
 
+  // Update login state when token changes
   useEffect(() => {
     setIsLogin(token ? false : true);
   }, [token]);
 
+  // Handle login/logout logic
   function checkLogin() {
     if (token) {
       localStorage.removeItem("token");
@@ -31,16 +33,17 @@ function Navbar() {
     }
   }
 
+  // Close login modal
   function closeLoginModal() {
     setIsLoginModalOpen(false);
   }
 
-  // ✅ Function to open login modal (for RecipeItems)
+  // Open login modal
   function openLoginModal() {
     setIsLoginModalOpen(true);
   }
 
-  // Close dropdown on outside click
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -64,7 +67,6 @@ function Navbar() {
             <NavLink to={!isLogin ? "/favRecipes" : "/"}> Favourites </NavLink>
           </li>
 
-          {/* Auth Section */}
           {isLogin ? (
             <li onClick={checkLogin} className="login-btn">Login</li>
           ) : (
@@ -85,7 +87,6 @@ function Navbar() {
         </ul>
       </header>
 
-      {/* ✅ Login Modal */}
       {isLoginModalOpen && (
         <Modal closeModal={closeLoginModal}>
           <InputForm closeModal={closeLoginModal} />
