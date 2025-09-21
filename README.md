@@ -1,4 +1,4 @@
-Recipe Hub 🍳
+# Recipe Hub 🍳
 
 Recipe Hub delivers a seamless, interactive experience for food lovers with comprehensive recipe management capabilities. Built complete CRUD functionality allowing users to add new recipes with image uploads, edit existing recipes, delete unwanted entries, and view detailed recipes in an elegant modal interface. Features an intuitive favorites system with heart icons for quick recipe saving and a powerful search & filter system that enables real-time filtering by recipe name, diet type, cuisine, and country. The clean, modern UI showcases recipes in beautiful card layouts with hover effects and smooth transitions, making it stand out from standard recipe applications through its advanced filtering capabilities and user-centric design.</strong>.
 
