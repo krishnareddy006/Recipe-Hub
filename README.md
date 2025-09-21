@@ -5,7 +5,7 @@ Recipe Hub delivers a seamless, interactive experience for food lovers with comp
 
 
   <a href="#">🌐 Live Demo</a> | 
-  <a href="#">💻 Github Repo</a> 
+  <a href="https://github.com/krishnareddy006/Recipe-Hub">💻 Github Repo</a> 
 
 
 ---
@@ -68,7 +68,7 @@ Recipe Hub delivers a seamless, interactive experience for food lovers with comp
   <img src="#" alt="Search Filter Screenshot" width="400"/>
 </p>
 
-
+---
 
 <p align="center">Recipe Hub © 2025 | Developed with ❤️ by Saikam Krishna Reddy</p>
 
