@@ -348,11 +348,13 @@ section {
   transform: rotate(2deg);
   transition: transform 0.3s ease;
   border-radius: 15px;
+  object-fit: cover;
 }
 
 /* Image hover effect */
 .home .right img:hover {
   transform: rotate(0deg) scale(1.02);
+
 }
 
 

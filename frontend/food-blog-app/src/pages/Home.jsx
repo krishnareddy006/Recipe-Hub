@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import foodRecipe from '../assets/foodRecipe.png';
+import recipeImg from '../assets/recipeImg.jpg'
 import RecipeItems from '../components/RecipeItems';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 import Modal from '../components/Modal';
@@ -129,7 +129,7 @@ function Home() {
         </div>
         <div className='right'>
           <img 
-            src={foodRecipe} 
+            src={recipeImg} 
             alt="Delicious Food Recipe" 
             onMouseEnter={(e) => e.target.style.transform = 'rotate(0deg) scale(1.05)'}
             onMouseLeave={(e) => e.target.style.transform = 'rotate(2deg) scale(1)'}

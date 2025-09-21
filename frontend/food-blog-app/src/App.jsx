@@ -11,7 +11,7 @@ import RecipePage from './pages/MyRecipe.jsx';
 // Fetch all recipes
 const getAllRecipes = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/recipes");
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/recipes`);
     return response.data;
   } catch (error) {
     console.error("Error fetching recipes:", error);

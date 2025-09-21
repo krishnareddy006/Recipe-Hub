@@ -21,7 +21,7 @@ function RecipeModal({ recipe, onClose }) {
 
         <div className="recipe-modal-image-container">
           <img 
-            src={`http://localhost:5000/images/${recipe.coverImage}`} 
+            src={`${import.meta.env.VITE_API_URL}/images/${recipe.coverImage}`} 
             alt={recipe.title}
             className="recipe-modal-image"
           />

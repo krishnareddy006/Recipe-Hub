@@ -54,7 +54,7 @@ function RecipeItems({
       setFavoriteRecipes(updatedFavorites);
       localStorage.setItem(`fav_${user._id}`, JSON.stringify(updatedFavorites));
       
-      await axios.delete(`http://localhost:5000/recipes/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/recipes/${id}`);
       
     } catch (error) {
       console.error("Error deleting recipe:", error);
@@ -111,7 +111,7 @@ function RecipeItems({
             onClick={(e) => handleCardClick(item, e)}
           >
             <img 
-              src={`http://localhost:5000/images/${item.coverImage}`} 
+              src={`${import.meta.env.VITE_API_URL}/images/${item.coverImage}`} 
               alt={item.title}
             />
             <div className="card-body">

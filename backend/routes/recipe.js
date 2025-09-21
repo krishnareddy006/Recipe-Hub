@@ -1,4 +1,3 @@
-// backend/routes/recipe.js
 import express from "express";
 import { getRecipes, getRecipe, addRecipe, editRecipe, deleteRecipe, upload } from "../controller/recipe.js";
 import verifyToken from "../middleware/auth.js";

@@ -38,12 +38,12 @@ const addRecipe = async (req, res) => {
   try {
     const { title, ingredients, instructions, time, dietType, cuisineType, country } = req.body;
 
-    // ✅ Check required fields only
+    
     if (!title || !ingredients || !instructions || !time) {
       return res.status(400).json({ message: "Please provide title, ingredients, instructions, and time" });
     }
 
-    // ✅ Normalize ingredients into an array
+    //  Normalize ingredients into an array
     let ingredientsArr = [];
     if (typeof ingredients === "string") {
       ingredientsArr = ingredients.split(",").map(s => s.trim());
@@ -51,15 +51,15 @@ const addRecipe = async (req, res) => {
       ingredientsArr = ingredients;
     }
 
-    // ✅ Create new recipe
+    //  Create new recipe
     const newRecipe = await Recipes.create({
       title,
       ingredients: ingredientsArr,
       instructions,
       time,
       coverImage: req.file ? req.file.filename : null,
-      createdBy: req.user?.id || null, // ✅ Safe check in case no user
-      dietType: dietType || "",        // optional fields → default empty string
+      createdBy: req.user?.id || null, 
+      dietType: dietType || "",        
       cuisineType: cuisineType || "",
       country: country || ""
     });
@@ -79,11 +79,10 @@ const editRecipe = async (req, res) => {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    // ✅ Include new fields in update (req.body will contain all fields)
     const updated = await Recipes.findByIdAndUpdate(
       req.params.id,
       {
-        ...req.body, // ✅ This will include dietType, cuisineType, country
+        ...req.body, 
         coverImage: req.file ? req.file.filename : recipe.coverImage,
       },
       { new: true }

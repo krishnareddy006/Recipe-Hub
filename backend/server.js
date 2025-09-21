@@ -1,4 +1,3 @@
-// backend/server.js
 import express from "express";
 import dotenv from "dotenv";
 // import path from "path";
@@ -6,7 +5,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/connectionDB.js";
 import recipeRouter from "./routes/recipe.js";
-import userRouter from "./routes/user.js"; // if you have it
+import userRouter from "./routes/user.js"; 
 
 dotenv.config();
 

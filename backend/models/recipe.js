@@ -7,10 +7,9 @@ const recipeSchema = new mongoose.Schema({
     time: { type: String },
     coverImage: { type: String },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    // ✅ NEW FIELDS - Simple strings for easy frontend handling
-    dietType: { type: String,required: true }, // "Veg" or "Non-Veg"
-    cuisineType: { type: String,required: true }, // "Salad", "Curry", "Dessert", etc.
-    country: { type: String,required: true } // "Indian", "Italian", "Chinese", etc.
+    dietType: { type: String,required: true }, 
+    cuisineType: { type: String,required: true }, 
+    country: { type: String,required: true }
 }, { timestamps: true });
 
 const Recipes = mongoose.model("Recipes", recipeSchema);
