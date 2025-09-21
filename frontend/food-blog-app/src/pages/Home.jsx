@@ -12,6 +12,8 @@ function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  
+  // ✅ Dynamic login state
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
   // State for search and filtering
@@ -24,52 +26,73 @@ function Home() {
     country: ''
   });
 
-  // Keep login state synced with localStorage
+  // ✅ Enhanced login state sync
   useEffect(() => {
-    const checkLogin = () => setIsLoggedIn(!!localStorage.getItem("token"));
-    window.addEventListener("storage", checkLogin);
-    return () => window.removeEventListener("storage", checkLogin);
+    const handleAuthChange = () => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    };
+
+    // Listen for auth events
+    window.addEventListener('user-login', handleAuthChange);
+    window.addEventListener('user-logout', handleAuthChange);
+    window.addEventListener('storage', handleAuthChange);
+    
+    // Periodic check
+    const interval = setInterval(handleAuthChange, 500);
+
+    return () => {
+      window.removeEventListener('user-login', handleAuthChange);
+      window.removeEventListener('user-logout', handleAuthChange);
+      window.removeEventListener('storage', handleAuthChange);
+      clearInterval(interval);
+    };
   }, []);
 
   // Navigate to add recipe page or open login modal
   const toAddRecipe = () => {
-    if (isLoggedIn) navigate("/addRecipe");
-    else setIsLoginOpen(true);
+    const currentToken = localStorage.getItem("token");
+    if (currentToken) {
+      navigate("/addRecipe");
+    } else {
+      setIsLoginOpen(true);
+    }
   };
 
-  // Close login modal and update login status
+  // ✅ Enhanced close modal
   function closeLoginModal() {
     setIsLoginOpen(false);
-    setIsLoggedIn(!!localStorage.getItem("token"));
+    
+    // Update login state after modal closes
+    setTimeout(() => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    }, 200);
   }
 
-  // Close recipe details modal
   function closeRecipeModal() {
     setIsRecipeModalOpen(false);
     setSelectedRecipe(null);
   }
 
-  // Open recipe details modal
   function handleViewRecipe(recipe) {
     setSelectedRecipe(recipe);
     setIsRecipeModalOpen(true);
   }
 
-  // Open login modal explicitly
   function showLoginModal() {
     setIsLoginOpen(true);
   }
 
   const recipes = useLoaderData() || [];
 
-  // Handle search input changes
+  // Search and filter logic (unchanged)
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
     applyFilters(term, filters);
   };
 
-  // Clear search and reset filters
   const clearSearch = () => {
     setSearchTerm('');
     setFilters({ dietType: '', cuisineType: '', country: '' });
@@ -77,14 +100,12 @@ function Home() {
     setFilterOpen(false);
   };
 
-  // Update filters dynamically
   const handleFilterChange = (filterType, value) => {
     const newFilters = { ...filters, [filterType]: value };
     setFilters(newFilters);
     applyFilters(searchTerm, newFilters);
   };
 
-  // Apply search and filter logic
   const applyFilters = (searchText, currentFilters) => {
     let filtered = recipes;
 
@@ -104,11 +125,9 @@ function Home() {
     setFilteredRecipes(filtered);
   };
 
-  // Decide whether to show all recipes or filtered ones
   const hasActiveFilters = searchTerm || filters.dietType || filters.cuisineType || filters.country;
   const displayRecipes = hasActiveFilters ? filteredRecipes : recipes;
 
-  // Extract unique cuisines and countries for filter dropdowns
   const uniqueCuisines = [...new Set(recipes.map(r => r.cuisineType).filter(Boolean))];
   const uniqueCountries = [...new Set(recipes.map(r => r.country).filter(Boolean))];
 

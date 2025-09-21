@@ -13,9 +13,23 @@ function InputForm(props) {
 
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/${endpoint}`, { email, password });
+      
+      // ✅ Store token and user data
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      props.closeModal();
+      
+      // ✅ Trigger global state update event
+      window.dispatchEvent(new Event('user-login'));
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'token',
+        newValue: res.data.token
+      }));
+      
+      // ✅ Close modal after slight delay to ensure state updates
+      setTimeout(() => {
+        props.closeModal();
+      }, 100);
+      
     } catch (err) {
       setMessage(err.response?.data?.message);
     }

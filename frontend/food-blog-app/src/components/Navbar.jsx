@@ -10,37 +10,83 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  let token = localStorage.getItem("token");
-  const [isLogin, setIsLogin] = useState(token ? false : true);
-  let user = JSON.parse(localStorage.getItem("user"));
+  // ✅ Dynamic state management
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [isLogin, setIsLogin] = useState(!token);
 
-  // Update login state when token changes
+  // ✅ Listen for login/logout events and localStorage changes
   useEffect(() => {
-    setIsLogin(token ? false : true);
-  }, [token]);
+    const handleAuthChange = () => {
+      const currentToken = localStorage.getItem("token");
+      const currentUser = JSON.parse(localStorage.getItem("user"));
+      
+      setToken(currentToken);
+      setUser(currentUser);
+      setIsLogin(!currentToken);
+    };
+
+    // Listen for custom events
+    window.addEventListener('user-login', handleAuthChange);
+    window.addEventListener('user-logout', handleAuthChange);
+    window.addEventListener('storage', handleAuthChange);
+    
+    // Periodic check for same-tab changes
+    const interval = setInterval(handleAuthChange, 500);
+
+    return () => {
+      window.removeEventListener('user-login', handleAuthChange);
+      window.removeEventListener('user-logout', handleAuthChange);
+      window.removeEventListener('storage', handleAuthChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   // Handle login/logout logic
   function checkLogin() {
     if (token) {
+      // Logout
       localStorage.removeItem("token");
-      localStorage.removeItem("user"); 
+      localStorage.removeItem("user");
+      
+      // Clear all user-specific data
+      const allKeys = Object.keys(localStorage);
+      allKeys.forEach(key => {
+        if (key.startsWith('fav_')) {
+          // Keep favorites but they won't be accessible without login
+        }
+      });
+
+      setToken(null);
+      setUser(null);
       setIsLogin(true);
       setDropdownOpen(false);
-      navigate("/");  
-      window.location.reload();
+      
+      // ✅ Trigger logout event
+      window.dispatchEvent(new Event('user-logout'));
+      
+      navigate("/");
+      setTimeout(() => window.location.reload(), 100);
     } else {
       setIsLoginModalOpen(true);
     }
   }
 
-  // Close login modal
+  // ✅ Improved close modal with state sync
   function closeLoginModal() {
     setIsLoginModalOpen(false);
-  }
-
-  // Open login modal
-  function openLoginModal() {
-    setIsLoginModalOpen(true);
+    
+    // Check auth state after modal closes
+    setTimeout(() => {
+      const currentToken = localStorage.getItem("token");
+      const currentUser = JSON.parse(localStorage.getItem("user"));
+      
+      if (currentToken && currentUser) {
+        setToken(currentToken);
+        setUser(currentUser);
+        setIsLogin(false);
+      }
+    }, 200);
   }
 
   // Close dropdown when clicking outside
@@ -60,11 +106,31 @@ function Navbar() {
         <h2>Recipe Hub</h2>
         <ul className="nav-links">
           <li><NavLink to="/"> Home </NavLink></li>
-          <li onClick={() => isLogin && setIsLoginModalOpen(true)}>
-            <NavLink to={!isLogin ? "/myRecipe" : "/"}> My Recipe </NavLink>
+          <li>
+            <NavLink 
+              to={!isLogin ? "/myRecipe" : "#"}
+              onClick={(e) => {
+                if (isLogin) {
+                  e.preventDefault();
+                  setIsLoginModalOpen(true);
+                }
+              }}
+            > 
+              My Recipe 
+            </NavLink>
           </li>
-          <li onClick={() => isLogin && setIsLoginModalOpen(true)}>
-            <NavLink to={!isLogin ? "/favRecipes" : "/"}> Favourites </NavLink>
+          <li>
+            <NavLink 
+              to={!isLogin ? "/favRecipes" : "#"}
+              onClick={(e) => {
+                if (isLogin) {
+                  e.preventDefault();
+                  setIsLoginModalOpen(true);
+                }
+              }}
+            > 
+              Favourites 
+            </NavLink>
           </li>
 
           {isLogin ? (
