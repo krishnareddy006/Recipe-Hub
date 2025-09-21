@@ -1,81 +1,94 @@
-# Recipe Hub 🍳
+<h1 align="center">Recipe Hub 🍳</h1>
+<p align="center">
+A modern, full-stack recipe sharing platform built with React.js and Node.js for food enthusiasts to <strong>discover, share, and manage recipes effortlessly</strong>.
+</p>
 
-[![React](https://img.shields.io/badge/React-17.0.2-blue?logo=react&logoColor=white)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-18.16-green?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-4.18.2-black?logo=express&logoColor=white)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.1.5-green?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/React-17.0.2-blue?logo=react&logoColor=white" alt="React"/></a>
+  <a href="#"><img src="https://img.shields.io/badge/Node.js-18.16-green?logo=node.js&logoColor=white" alt="Node.js"/></a>
+  <a href="#"><img src="https://img.shields.io/badge/Express-4.18.2-black?logo=express&logoColor=white" alt="Express.js"/></a>
+  <a href="#"><img src="https://img.shields.io/badge/MongoDB-6.1.5-green?logo=mongodb&logoColor=white" alt="MongoDB"/></a>
+  <a href="#"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"/></a>
+</p>
 
-**Live Demo:** [Recipe Hub Live](#)  
-**GitHub Repo:** [Frontend](#) | [Backend](#)
+<p align="center">
+  <a href="#">🌐 Live Demo</a> | 
+  <a href="#">💻 Frontend Repo</a> | 
+  <a href="#">💾 Backend Repo</a>
+</p>
 
 ---
 
-## Project Overview
+## 🚀 Overview
 
-**Recipe Hub** is a modern, full-stack recipe sharing platform designed for food enthusiasts to **discover, share, and manage recipes effortlessly**. Unlike typical recipe apps, Recipe Hub provides **advanced search filters, favorites, and real-time updates**, giving users a truly interactive experience.
+**Recipe Hub** is designed to deliver a **seamless, interactive experience** for food lovers. It features **advanced filtering, user favorites, and real-time updates**, making it stand out from standard recipe apps.  
 
 ---
 
-## Key Features
+## 🔑 Features
 
 ### 🔐 User Authentication
-- Secure login/logout system with JWT-based authentication  
+- JWT-based secure login/logout  
 - User profile management  
-- Protected routes ensuring only authorized access  
+- Protected routes for authenticated users  
 
 ### 🍽️ Recipe Management
-- **Browse & Discover:** Explore community recipes with images, timing, and dietary indicators  
-- **Add/Edit/Delete:** Full CRUD support for personal recipes  
-- **Favorites:** Save recipes for quick access  
+- **Browse & Discover:** Recipe cards with images, timing, and dietary indicators  
+- **Add/Edit/Delete:** Full CRUD support  
+- **Favorites:** Save favorite recipes for quick access  
 
-### 🔍 Advanced Search & Filtering
-- **Smart Search:** Real-time recipe search by name  
-- **Multi-Filters:** Filter recipes by cuisine, diet type (Veg/Non-Veg), and country  
-- **Dynamic Results:** Instant filtering with live result count  
+### 🔍 Advanced Search & Filters
+- Real-time search by recipe name  
+- Filter by diet type (Veg/Non-Veg), cuisine, and country  
+- Dynamic results with live count  
 
 ### 🎨 Modern UI/UX
-- Clean, responsive interface with smooth animations  
-- Recipe cards with hover effects and detailed modal view  
-- User-friendly feedback and interactive design  
+- Responsive, clean interface with smooth animations  
+- Hover effects and modal views for detailed recipe info  
+- Interactive feedback and visual cues  
 
 ### 💾 Data Management
 - User-specific collections and persistent favorites  
-- Image uploads handled with Multer for optimized display  
-- Real-time updates for seamless user experience  
+- Optimized image uploads using Multer  
+- Real-time updates for seamless UX  
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-**Frontend:**  
-React.js | React Router | CSS3 | React Icons  
-
-**Backend:**  
-Node.js | Express.js | MongoDB | Multer  
-
-**Development Tools:**  
-ES6+ | Component-based architecture | Git & GitHub  
+**Frontend:** React.js | React Router | CSS3 | React Icons  
+**Backend:** Node.js | Express.js | MongoDB | Multer  
+**Tools & Practices:** ES6+, Component Architecture, Git & GitHub  
 
 ---
 
-## Why Recipe Hub is Unique
-1. **Advanced Multi-Filter Search:** Makes finding the perfect recipe effortless.  
-2. **Interactive Recipe Modals:** Detailed, elegant modal view for better UX.  
-3. **Favorites & Real-Time Updates:** User-centric approach with persistent personal data.  
+## 🌟 Why Recipe Hub is Unique
+1. **Advanced Multi-Filter Search:** Effortless recipe discovery.  
+2. **Interactive Recipe Modals:** Enhanced user experience.  
+3. **Favorites & Real-Time Updates:** Personalized and dynamic content.  
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-![Homepage](#)
-![Recipe Modal](#)
-![Search Filters](#)
+<p align="center">
+  <img src="#" alt="Homepage Screenshot" width="400"/>
+  <img src="#" alt="Recipe Modal Screenshot" width="400"/>
+  <img src="#" alt="Search Filter Screenshot" width="400"/>
+</p>
 
 ---
 
-## How to Run Locally
+## 📊 GitHub Stats
+<p align="center"> <img src="https://github-readme-stats.vercel.app/api?username=krishnareddy006&show_icons=true&theme=radical" alt="GitHub Stats" /> <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=krishnareddy006&&layout=compact&theme=radical" alt="Top Languages" /> </p>
 
-1. Clone the repository:  
-   ```bash
-   git clone <your-repo-link>
+---
+
+## 👀 Visitor Badge
+<p align="center"> <img src="https://visitor-badge.laobi.icu/badge?page_id=YOUR_GITHUB_USERNAME.recipe-hub" alt="Visitor Badge"/> </p>
+
+---
+
+Recipe Hub © 2025 | Developed with ❤️ by Saikam Krishna Reddy
+
+---
