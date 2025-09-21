@@ -1,22 +1,21 @@
 <h1 align="center">Recipe Hub 🍳</h1>
 <p align="center">
-A modern, full-stack recipe sharing platform built with React.js and Node.js for food enthusiasts to <strong>discover, share, and manage recipes effortlessly</strong>.
+Recipe Hub delivers a seamless, interactive experience for food lovers with comprehensive recipe management capabilities. Built complete CRUD functionality allowing users to add new recipes with image uploads, edit existing recipes, delete unwanted entries, and view detailed recipes in an elegant modal interface. Features an intuitive favorites system with heart icons for quick recipe saving and a powerful search & filter system that enables real-time filtering by recipe name, diet type, cuisine, and country. The clean, modern UI showcases recipes in beautiful card layouts with hover effects and smooth transitions, making it stand out from standard recipe applications through its advanced filtering capabilities and user-centric design.</strong>.
 </p>
 
 
 <p align="center">
   <a href="#">🌐 Live Demo</a> | 
-  <a href="#">💻 Frontend Repo</a> | 
-  <a href="#">💾 Backend Repo</a>
+  <a href="#">💻 Github Repo</a> 
 </p>
 
----
+--
 
 ## 🚀 Overview
 
 **Recipe Hub** is designed to deliver a **seamless, interactive experience** for food lovers. It features **advanced filtering, user favorites, and real-time updates**, making it stand out from standard recipe apps.  
 
----
+--
 
 ## 🔑 Features
 
@@ -45,7 +44,7 @@ A modern, full-stack recipe sharing platform built with React.js and Node.js for
 - Optimized image uploads using Multer  
 - Real-time updates for seamless UX  
 
----
+--
 
 ## 🛠️ Tech Stack
 
@@ -53,14 +52,14 @@ A modern, full-stack recipe sharing platform built with React.js and Node.js for
 **Backend:** Node.js | Express.js | MongoDB | Multer  
 **Tools & Practices:** ES6+, Component Architecture, Git & GitHub  
 
----
+--
 
 ## 🌟 Why Recipe Hub is Unique
 1. **Advanced Multi-Filter Search:** Effortless recipe discovery.  
 2. **Interactive Recipe Modals:** Enhanced user experience.  
 3. **Favorites & Real-Time Updates:** Personalized and dynamic content.  
 
----
+--
 
 ## 📸 Screenshots
 
@@ -70,7 +69,7 @@ A modern, full-stack recipe sharing platform built with React.js and Node.js for
   <img src="#" alt="Search Filter Screenshot" width="400"/>
 </p>
 
----
+--
 
-<p align="center">Recipe Hub © 2025 | Developed with ❤️ by Saikam Krishna Reddy<?p>
+<p align="center">Recipe Hub © 2025 | Developed with ❤️ by Saikam Krishna Reddy</p>
 
