@@ -2159,3 +2159,129 @@ section {
   .footer-main { border-bottom: 1px solid #213547 !important; }
   .feedback-section h3, .follow-section h3 { color: #213547 !important; }
 }
+
+
+/* ========== MOBILE NAVIGATION ========== */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #213547;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+  background-color: rgba(33, 53, 71, 0.1);
+}
+
+.mobile-nav-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e9ecef;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.mobile-nav-menu a {
+  display: block;
+  padding: 15px 20px;
+  color: #213547;
+  text-decoration: none;
+  border-bottom: 1px solid #f8f9fa;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.mobile-nav-menu a:hover,
+.mobile-nav-menu a.active {
+  background-color: #f8f9fa;
+  color: #e67e22;
+}
+
+.mobile-login-btn {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 10px 20px;
+  padding: 12px;
+  background: #213547;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.mobile-login-btn:hover {
+  background: #e67e22;
+}
+
+.mobile-profile {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.mobile-user-email {
+  display: block;
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 10px;
+}
+
+.mobile-logout-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.mobile-logout-btn:hover {
+  background: #c82333;
+}
+
+/* ========== RESPONSIVE BEHAVIOR ========== */
+@media screen and (max-width: 768px) {
+  .desktop-title {
+    display: none; /* Hide title on mobile */
+  }
+  
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  .desktop-nav {
+    display: none;
+  }
+  
+  header {
+    justify-content: flex-end;
+    padding: 0 1rem;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .mobile-menu-toggle {
+    display: none;
+  }
+  
+  .mobile-nav-menu {
+    display: none;
+  }
+  
+  .desktop-nav {
+    display: flex;
+  }
+  
+  .desktop-title {
+    display: block;
+  }
+}

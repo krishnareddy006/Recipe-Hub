@@ -5,6 +5,7 @@ import { FaHeart } from "react-icons/fa6";
 import { FaEdit, FaLeaf, FaDrumstickBite } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from 'axios';
+import { getUser, getToken } from '../utils/AuthUtils';
 
 function RecipeItems({ 
   loadedRecipes,
@@ -20,8 +21,8 @@ function RecipeItems({
   const isHomePage = window.location.pathname === "/";
   
   // Current user and auth data
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = localStorage.getItem("token");
+  const user = getUser();
+  const token = getToken();
   
   // Load user-specific favorites
   const [favoriteRecipes, setFavoriteRecipes] = useState(
@@ -111,7 +112,7 @@ function RecipeItems({
             onClick={(e) => handleCardClick(item, e)}
           >
             <img 
-              src={`${import.meta.env.VITE_API_URL}/images/${item.coverImage}`} 
+              src={item.coverImage || '/placeholder.jpg'}
               alt={item.title}
             />
             <div className="card-body">
