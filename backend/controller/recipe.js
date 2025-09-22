@@ -275,32 +275,47 @@ const editRecipe = async (req, res) => {
   }
 };
 
+// In controller/recipe.js - Update deleteRecipe function
 const deleteRecipe = async (req, res) => {
   try {
+    console.log("Delete request for recipe ID:", req.params.id);
+    console.log("User from token:", req.user);
+
     const recipe = await Recipes.findById(req.params.id);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    // ✅ Check if user owns the recipe
+    const userId = req.user?.id || req.user?._id;
+    if (recipe.createdBy && recipe.createdBy.toString() !== userId.toString()) {
+      return res.status(403).json({ message: "Not authorized to delete this recipe" });
     }
 
     // ✅ Delete from Cloudinary if exists
     if (recipe.coverImage) {
       try {
         // Extract public_id from Cloudinary URL
-        const publicId = recipe.coverImage.split('/').pop().split('.')[0];
+        const urlParts = recipe.coverImage.split('/');
+        const publicIdWithExtension = urlParts[urlParts.length - 1];
+        const publicId = publicIdWithExtension.split('.')[0];
         await cloudinary.uploader.destroy(`recipe-hub/${publicId}`);
+        console.log("Image deleted from Cloudinary");
       } catch (cloudError) {
         console.error("Cloudinary delete error:", cloudError);
-        // Continue with recipe deletion even if image deletion fails
       }
     }
 
     await Recipes.deleteOne({ _id: req.params.id });
+    console.log("Recipe deleted successfully");
+    
     res.json({ message: "Recipe deleted successfully" });
   } catch (err) {
     console.error("deleteRecipe error:", err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 export { getRecipes, getRecipe, addRecipe, editRecipe, deleteRecipe, upload };
 
