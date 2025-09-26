@@ -5,7 +5,7 @@ import { BsFillStopwatchFill } from "react-icons/bs";
 function RecipeModal({ recipe, onClose }) {
   if (!recipe) return null;
 
-  // Utility function to check if an ingredient string is unusually long
+  // Check if ingredient string is unusually long
   const isLongIngredient = (ingredient) => {
     return ingredient.length > 50;
   };
@@ -21,40 +21,35 @@ function RecipeModal({ recipe, onClose }) {
 
         <div className="recipe-modal-image-container">
           <img 
-            src={`${import.meta.env.VITE_API_URL}/images/${recipe.coverImage}`} 
+            src={recipe.coverImage || '/placeholder.jpg'}
             alt={recipe.title}
             className="recipe-modal-image"
+            onError={(e) => {
+              e.target.src = '/placeholder.jpg';
+            }}
           />
         </div>
 
-        {/* Recipe metadata section */}
+        {/* Tags like diet type, cuisine, country */}
         <div className="recipe-modal-details">
           {recipe.dietType && (
-            <div className="recipe-modal-tag">
-              {recipe.dietType}
-            </div>
+            <div className="recipe-modal-tag">{recipe.dietType}</div>
           )}
-          
           {recipe.cuisineType && (
-            <div className="recipe-modal-tag">
-              {recipe.cuisineType}
-            </div>
+            <div className="recipe-modal-tag">{recipe.cuisineType}</div>
           )}
-          
           {recipe.country && (
-            <div className="recipe-modal-tag">
-              {recipe.country}
-            </div>
+            <div className="recipe-modal-tag">{recipe.country}</div>
           )}
         </div>
 
-        {/* Cooking time display */}
+        {/* Cooking time */}
         <div className="recipe-modal-time">
           <BsFillStopwatchFill />
           <span>{recipe.time}</span>
         </div>
 
-        {/* Ingredients list */}
+        {/* Ingredients */}
         <div className="recipe-modal-section">
           <h3>Ingredients</h3>
           <div className="recipe-modal-ingredients">
@@ -75,7 +70,7 @@ function RecipeModal({ recipe, onClose }) {
           </div>
         </div>
 
-        {/* Cooking instructions */}
+        {/* Instructions */}
         <div className="recipe-modal-section">
           <h3>Instructions</h3>
           <div className="recipe-modal-instructions">

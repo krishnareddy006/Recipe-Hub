@@ -17,6 +17,7 @@ function Footer() {
     <div className='footer'>
       <div className='footer-content'>
         <div className='footer-main'>
+          {/* Feedback Section */}
           <div className='footer-left'>
             <div className='feedback-section'>
               <h3>We'd Love Your Feedback!</h3>
@@ -34,6 +35,8 @@ function Footer() {
               </form>
             </div>
           </div>
+
+          {/* Contact & Social Links */}
           <div className='footer-right'>
             <div className='follow-section'>
               <h3>Contact Me</h3>
@@ -68,11 +71,12 @@ function Footer() {
                 >
                   <FaInstagram className='social-icon' />
                 </a>
-                
               </div>
             </div>
           </div>
         </div>
+
+        {/* Footer Bottom */}
         <div className='footer-bottom'>
           <p className='footer-text'>
             © 2025 Recipe Hub. All rights reserved. | Crafted with passion for food lovers worldwide
@@ -84,3 +88,5 @@ function Footer() {
 }
 
 export default Footer;
+
+

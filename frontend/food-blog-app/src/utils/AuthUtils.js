@@ -1,4 +1,3 @@
-// Simple utility functions - NO context, NO event listeners
 export const getUser = () => {
   try {
     const userData = localStorage.getItem("user");
@@ -30,7 +29,6 @@ export const login = (userData, token) => {
 export const logout = () => {
   try {
     localStorage.clear();
-    // ✅ Small delay to ensure localStorage is cleared
     setTimeout(() => {
       window.location.href = "/";
     }, 100);
