@@ -163,7 +163,7 @@ function AddFoodRecipe() {
             name="cuisineType" 
             value={recipeData.cuisineType}
             onChange={onHandleChange} 
-            placeholder="e.g., Indian, Italian"
+            placeholder="e.g., Main Course, Dessert, Appetizer"
             disabled={isSubmitting}
           />
         </div>
@@ -176,7 +176,7 @@ function AddFoodRecipe() {
             name="country" 
             value={recipeData.country}
             onChange={onHandleChange} 
-            placeholder="e.g., India, Italy"
+            placeholder="e.g., Indian, Italian, Mexican, Chinese"
             disabled={isSubmitting}
           />
         </div>
