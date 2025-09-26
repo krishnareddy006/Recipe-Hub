@@ -79,7 +79,7 @@ function Home() {
           </h1>
           
           <h5 className='hero-paragraph'>
-            Life's too short for boring food and untold kitchen stories! ...
+            Life's too short for boring food and untold kitchen stories! From epic cooking wins to hilarious culinary catastrophes, every dish has a tale that deserves to be shared. Maybe it's your grandmother's secret spice blend, that accidental masterpiece you created at 2 AM, or the recipe that always makes your friends say 'you HAVE to give me this recipe!' Food connects us, stories inspire us, and sharing makes it all worthwhile. Ready to turn your kitchen adventures into everyone's next favorite dish?
           </h5>
           <button onClick={toAddRecipe}>Share your recipe</button>
         </div>
