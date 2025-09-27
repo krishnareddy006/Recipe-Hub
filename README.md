@@ -63,11 +63,11 @@ Recipe Hub delivers a seamless, interactive experience for food lovers with comp
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/6e6a0afb-a988-4b70-9768-4ede6c11352a" alt="Homepage Screenshot" width="400"/>
-  <img src="https://github.com/user-attachments/assets/777c0237-064a-45a8-911f-6bf2bd3ce089" alt="Search Screenshot" width="400"/>
-  <img src="https://github.com/user-attachments/assets/26229823-f33c-46c8-ad28-93c092ba456d" alt="View Recipe Screenshot" width="400"/>
-  <img src="https://github.com/user-attachments/assets/67530f70-0d9d-492f-a1cb-0135fa8dfae5" alt="My Recipes Screenshot" width="400"/>
+  <img src="https://github.com/user-attachments/assets/67530f70-0d9d-492f-a1cb-0135fa8dfae5" alt="Homepage Screenshot" width="400"/>
+  <img src="https://github.com/user-attachments/assets/6e6a0afb-a988-4b70-9768-4ede6c11352a" alt="Search Screenshot" width="400"/>
+  <img src="https://github.com/user-attachments/assets/777c0237-064a-45a8-911f-6bf2bd3ce089" alt="My Recipes Screenshot" width="400"/>
   <img src="https://github.com/user-attachments/assets/eacce217-23f8-4baa-94ec-7d2853826169" alt="Favorite Recipes Screenshot" width="400"/>
+  <img src="https://github.com/user-attachments/assets/26229823-f33c-46c8-ad28-93c092ba456d" alt="View Recipe Screenshot" width="400"/>
 </p>
 
 
