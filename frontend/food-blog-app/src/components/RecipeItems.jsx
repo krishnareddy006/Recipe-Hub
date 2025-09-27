@@ -26,12 +26,19 @@ function RecipeItems({
   const token = getToken();
   
   // Favorite recipes state (persisted by user)
+  // const [favoriteRecipes, setFavoriteRecipes] = useState(() => {
+  //   if (user && user._id) {
+  //     return JSON.parse(localStorage.getItem(`fav_${user._id}`)) || [];
+  //   }
+  //   return [];
+  // });
   const [favoriteRecipes, setFavoriteRecipes] = useState(() => {
-    if (user && user._id) {
-      return JSON.parse(localStorage.getItem(`fav_${user._id}`)) || [];
-    }
-    return [];
-  });
+  if (user && (user._id || user.email)) {
+    const userId = user._id || user.email;
+    return JSON.parse(localStorage.getItem(`fav_${userId}`)) || [];
+  }
+  return [];
+});
 
   // Sync recipes when props or favorites change
   useEffect(() => {
@@ -67,7 +74,9 @@ function RecipeItems({
       if (user && user._id) {
         const updatedFavorites = favoriteRecipes.filter((recipe) => recipe._id !== id);
         setFavoriteRecipes(updatedFavorites);
-        localStorage.setItem(`fav_${user._id}`, JSON.stringify(updatedFavorites));
+        // localStorage.setItem(`fav_${user._id}`, JSON.stringify(updatedFavorites));
+        const userId = user._id || user.email;
+        localStorage.setItem(`fav_${userId}`, JSON.stringify(updatedFavorites));
       }
       
       if (onRecipeDeleted) {
@@ -127,7 +136,9 @@ function RecipeItems({
     }
     
     setFavoriteRecipes(updatedFavorites);
-    localStorage.setItem(`fav_${user._id}`, JSON.stringify(updatedFavorites));
+    // localStorage.setItem(`fav_${user._id}`, JSON.stringify(updatedFavorites));
+    const userId = user._id || user.email;
+    localStorage.setItem(`fav_${userId}`, JSON.stringify(updatedFavorites));
     
     if (isFavPage && isAlreadyFavorite) {
       setRecipes(updatedFavorites);
