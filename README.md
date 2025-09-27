@@ -4,7 +4,7 @@ Recipe Hub delivers a seamless, interactive experience for food lovers with comp
 
 
 
-  <a href="#">🌐 Live Demo</a> | 
+  <a href="recipe-hub-gamma-seven.vercel.app">🌐 Live Demo</a> | 
   <a href="https://github.com/krishnareddy006/Recipe-Hub">💻 Github Repo</a> 
 
 
