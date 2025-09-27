@@ -30,7 +30,7 @@ const getMyRecipes = async () => {
 const getFavRecipes = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (!user) return [];
-  return JSON.parse(localStorage.getItem(`fav_${user._id}`)) || [];
+  return JSON.parse(localStorage.getItem(`fav_${user.email}`)) || [];
 };
 
 // Routes

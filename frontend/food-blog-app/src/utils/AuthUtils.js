@@ -28,7 +28,9 @@ export const login = (userData, token) => {
 
 export const logout = () => {
   try {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    
     setTimeout(() => {
       window.location.href = "/";
     }, 100);

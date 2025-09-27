@@ -16,30 +16,27 @@ function RecipeItems({
 }) {
   const [recipes, setRecipes] = useState(loadedRecipes || []);
   
-  // Page checks
   const isMyRecipePage = window.location.pathname === "/myRecipe";
   const isFavPage = window.location.pathname === "/favRecipes";
   const isHomePage = window.location.pathname === "/";
   
-  // Auth and user info
   const user = getUser();
   const token = getToken();
   
-  // Favorite recipes state (persisted by user)
-  // const [favoriteRecipes, setFavoriteRecipes] = useState(() => {
-  //   if (user && user._id) {
-  //     return JSON.parse(localStorage.getItem(`fav_${user._id}`)) || [];
-  //   }
-  //   return [];
-  // });
-  const [favoriteRecipes, setFavoriteRecipes] = useState(() => {
-  if (user && user.email) {
-    return JSON.parse(localStorage.getItem(`fav_${user.email}`)) || [];
-  }
-  return [];
-});
+  const getFavorites = () => {
+    if (user && user.email) {
+      return JSON.parse(localStorage.getItem(`fav_${user.email}`)) || [];
+    }
+    return [];
+  };
 
-  // Sync recipes when props or favorites change
+  const [favoriteRecipes, setFavoriteRecipes] = useState(getFavorites());
+
+  useEffect(() => {
+    const favorites = getFavorites();
+    setFavoriteRecipes(favorites);
+  }, [user?.email]);
+
   useEffect(() => {
     if (isFavPage) {
       setRecipes(favoriteRecipes);
@@ -48,14 +45,6 @@ function RecipeItems({
     }
   }, [loadedRecipes, isFavPage, favoriteRecipes]);
 
-  // Keep favorites page up to date
-  useEffect(() => {
-    if (isFavPage) {
-      setRecipes(favoriteRecipes);
-    }
-  }, [favoriteRecipes, isFavPage]);
-
-  // Optimistic delete function with rollback on failure
   const onDelete = async (id) => {
     if (!token) {
       alert("Please login to delete recipes");
@@ -70,10 +59,9 @@ function RecipeItems({
       const updatedRecipes = recipes.filter((item) => item._id !== id);
       setRecipes(updatedRecipes);
       
-      if (user && user._id) {
-        const updatedFavorites = favoriteRecipes.filter((recipe) => recipe._id !== id);
+      if (user && user.email) {
+        const updatedFavorites = favoriteRecipes.filter(recipe => recipe._id !== id);
         setFavoriteRecipes(updatedFavorites);
-        // localStorage.setItem(`fav_${user._id}`, JSON.stringify(updatedFavorites));
         localStorage.setItem(`fav_${user.email}`, JSON.stringify(updatedFavorites));
       }
       
@@ -90,59 +78,49 @@ function RecipeItems({
 
     } catch (error) {
       console.error("Error deleting recipe:", error);
-      
-      // Rollback if API request fails
       setRecipes(loadedRecipes || []);
-      if (user && user._id) {
-        const originalFavorites = JSON.parse(localStorage.getItem(`fav_${user._id}`)) || [];
-        setFavoriteRecipes(originalFavorites);
-      }
+      const originalFavorites = getFavorites();
+      setFavoriteRecipes(originalFavorites);
       
       if (error.response?.status === 401) {
         alert("Session expired. Please login again.");
         localStorage.clear();
         window.location.href = "/";
-      } else if (error.response?.status === 403) {
-        alert("You can only delete your own recipes.");
-      } else if (error.response?.status === 404) {
-        alert("Recipe not found or already deleted.");
       } else {
         alert(`Failed to delete recipe: ${error.response?.data?.message || error.message}`);
       }
     }
   };
 
-  // Favorite/unfavorite toggle
   const toggleFavorite = (item) => {
     if (!token) {
       if (onLoginRequired) onLoginRequired();
       return;
     }
 
-    if (!user || !user._id) {
+    if (!user || !user.email) {
       if (onLoginRequired) onLoginRequired();
       return;
     }
 
-    const isAlreadyFavorite = favoriteRecipes.some((r) => r._id === item._id);
-    let updatedFavorites;
+    const currentFavorites = JSON.parse(localStorage.getItem(`fav_${user.email}`)) || [];
+    const isAlreadyFavorite = currentFavorites.some(recipe => recipe._id === item._id);
     
+    let updatedFavorites;
     if (isAlreadyFavorite) {
-      updatedFavorites = favoriteRecipes.filter((r) => r._id !== item._id);
+      updatedFavorites = currentFavorites.filter(recipe => recipe._id !== item._id);
     } else {
-      updatedFavorites = [...favoriteRecipes, item];
+      updatedFavorites = [...currentFavorites, item];
     }
     
-    setFavoriteRecipes(updatedFavorites);
-    // localStorage.setItem(`fav_${user._id}`, JSON.stringify(updatedFavorites));
     localStorage.setItem(`fav_${user.email}`, JSON.stringify(updatedFavorites));
+    setFavoriteRecipes(updatedFavorites);
     
     if (isFavPage && isAlreadyFavorite) {
       setRecipes(updatedFavorites);
     }
   };
 
-  // Handle recipe card click (ignores action buttons)
   const handleCardClick = (item, event) => {
     if (event.target.closest('.card-actions') || 
         event.target.closest('.action') || 
@@ -153,6 +131,10 @@ function RecipeItems({
     if (onViewRecipe) {
       onViewRecipe(item);
     }
+  };
+
+  const isRecipeFavorite = (recipeId) => {
+    return favoriteRecipes.some(recipe => recipe._id === recipeId);
   };
 
   return (
@@ -236,7 +218,7 @@ function RecipeItems({
                           toggleFavorite(item);
                         }}
                         style={{
-                          color: favoriteRecipes.some((r) => r._id === item._id) ? "red" : "#213547",
+                          color: isRecipeFavorite(item._id) ? "red" : "#213547",
                           cursor: "pointer",
                           fontSize: '18px',
                           transition: 'color 0.3s ease'
